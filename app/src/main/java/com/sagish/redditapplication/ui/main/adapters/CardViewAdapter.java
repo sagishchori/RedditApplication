@@ -46,7 +46,16 @@ public class CardViewAdapter<T> extends RecyclerView.Adapter<CardViewHolder> {
         notifyDataSetChanged();
     }
 
+    /**
+     * An interface for card item click event.
+     */
     public interface OnItemClickListener {
+
+        /**
+         * Notify an item was clicked.
+         *
+         * @param item  The data object that this item holds
+         */
         void onItemClicked(ChildrenItem item);
     }
 }

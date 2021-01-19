@@ -13,7 +13,11 @@ public class RetrofitClient {
 
     private static Retrofit retrofit = null;
 
-    public static Retrofit getClient(Context context) {
+    private RetrofitClient() {
+
+    }
+
+    public static Retrofit getClient() {
         if (retrofit == null) {
 
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -32,6 +36,6 @@ public class RetrofitClient {
     }
 
     public static <T> T bindService(Class<T> service) {
-        return retrofit.create(service);
+        return getClient().create(service);
     }
 }

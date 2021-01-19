@@ -21,12 +21,7 @@ public class MainActivity extends AbstractActivity {
 
         binding = DataBindingUtil.setContentView(this, getLayoutRes());
 
-        if (savedInstanceState == null) {
-            setFragmentToView(MainFragment.newInstance());
-        }
-
-        // Should be in Application class
-        RetrofitClient.getClient(this.getApplicationContext());
+        setFragmentToView(MainFragment.newInstance(), MainFragment.TAG);
     }
 
     @Override

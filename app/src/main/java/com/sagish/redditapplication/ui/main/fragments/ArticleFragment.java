@@ -25,6 +25,8 @@ import java.util.List;
 
 public class ArticleFragment extends AbstractFragment {
 
+    public static final String TAG = ArticleFragment.class.getSimpleName();
+
     private ArticleViewModel viewModel;
     private MainFragmentBinding binding;
     private ArticleAdapter adapter;
@@ -46,21 +48,7 @@ public class ArticleFragment extends AbstractFragment {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(ArticleViewModel.class);
 
-        viewModel.getArticleItem().observe(getViewLifecycleOwner(), new Observer<List<ChildrenItem>>() {
-            @Override
-            public void onChanged(List<ChildrenItem> childrenItems) {
-                adapter.setData((ArrayList) childrenItems);
-            }
-        });
-
-        viewModel.getResult().observe(getViewLifecycleOwner(), new Observer<Result>() {
-            @Override
-            public void onChanged(Result result) {
-                if (result.getStatus() == Result.Status.ERROR) {
-                    showDialog(result.getMessage());
-                }
-            }
-        });
+        setupObservers();
     }
 
     @Override
@@ -88,5 +76,24 @@ public class ArticleFragment extends AbstractFragment {
                 getString(R.string.ok),
                 null,
                 null).show();
+    }
+
+    @Override
+    protected void setupObservers() {
+        viewModel.getArticleItem().observe(getViewLifecycleOwner(), new Observer<List<ChildrenItem>>() {
+            @Override
+            public void onChanged(List<ChildrenItem> childrenItems) {
+                adapter.setData((ArrayList) childrenItems);
+            }
+        });
+
+        viewModel.getResult().observe(getViewLifecycleOwner(), new Observer<Result>() {
+            @Override
+            public void onChanged(Result result) {
+                if (result.getStatus() == Result.Status.ERROR) {
+                    showDialog(result.getMessage());
+                }
+            }
+        });
     }
 }

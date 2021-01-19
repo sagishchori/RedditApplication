@@ -23,8 +23,6 @@ public class ArticleCardViewHolder extends CardViewHolder<ChildrenItem> {
 
     @Override
     public void bindData(ChildrenItem data) {
-        super.bindData(data);
-
         childBinding.setData(data);
         Picasso.get().load(data.getData().getThumbnail()).into(childBinding.image);
     }

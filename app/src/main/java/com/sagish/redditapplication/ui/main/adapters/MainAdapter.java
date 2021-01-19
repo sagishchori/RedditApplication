@@ -32,9 +32,10 @@ public class MainAdapter extends CardViewAdapter<ChildrenItem> {
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
 
-        MainCardViewItemBinding mainCardViewItemBinding = MainCardViewItemBinding.inflate(LayoutInflater.from(holder.itemView.getContext()));
+        MainCardViewItemBinding mainCardViewItemBinding = MainCardViewItemBinding
+                .inflate(LayoutInflater.from(holder.itemView.getContext()));
         holder.bindChildView(mainCardViewItemBinding);
-        ChildrenItem item = (ChildrenItem) list.get(position);
+        final ChildrenItem item = list.get(position);
         holder.bindData(item);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

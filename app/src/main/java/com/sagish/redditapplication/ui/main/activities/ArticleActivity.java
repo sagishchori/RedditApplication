@@ -24,13 +24,17 @@ public class ArticleActivity extends AbstractActivity {
 
         binding = DataBindingUtil.setContentView(this, getLayoutRes());
 
-        setFragmentToView(ArticleFragment.newInstance());
+        setFragmentToView(ArticleFragment.newInstance(), ArticleFragment.TAG);
 
         viewModel = new ViewModelProvider(this).get(ArticleViewModel.class);
 
+        // This activity must have a link for a specific article to show, if no link
+        // exist close the activity
         if (getIntent() != null) {
             String link = getIntent().getStringExtra("URL_LINK");
             viewModel.setArticleLink(link);
+        } else {
+            finish();
         }
     }
 

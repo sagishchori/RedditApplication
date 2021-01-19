@@ -28,6 +28,8 @@ import java.util.List;
 
 public class MainFragment extends AbstractFragment implements CardViewAdapter.OnItemClickListener {
 
+    public static final String TAG = MainFragment.class.getSimpleName();
+
     private MainViewModel viewModel;
     private MainFragmentBinding binding;
     private MainAdapter adapter;
@@ -49,21 +51,7 @@ public class MainFragment extends AbstractFragment implements CardViewAdapter.On
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        viewModel.getChildrenItems().observe(getViewLifecycleOwner(), new Observer<List<ChildrenItem>>() {
-            @Override
-            public void onChanged(List<ChildrenItem> childrenItems) {
-                adapter.setData((ArrayList) childrenItems);
-            }
-        });
-
-        viewModel.getResult().observe(getViewLifecycleOwner(), new Observer<Result>() {
-            @Override
-            public void onChanged(Result result) {
-                if (result.getStatus() == Result.Status.ERROR) {
-                    showDialog(result.getMessage());
-                }
-            }
-        });
+        setupObservers();
     }
 
     @Override
@@ -91,6 +79,25 @@ public class MainFragment extends AbstractFragment implements CardViewAdapter.On
                 getString(R.string.ok),
                 null,
                 null).show();
+    }
+
+    @Override
+    protected void setupObservers() {
+        viewModel.getChildrenItems().observe(getViewLifecycleOwner(), new Observer<List<ChildrenItem>>() {
+            @Override
+            public void onChanged(List<ChildrenItem> childrenItems) {
+                adapter.setData((ArrayList) childrenItems);
+            }
+        });
+
+        viewModel.getResult().observe(getViewLifecycleOwner(), new Observer<Result>() {
+            @Override
+            public void onChanged(Result result) {
+                if (result.getStatus() == Result.Status.ERROR) {
+                    showDialog(result.getMessage());
+                }
+            }
+        });
     }
 
     @Override

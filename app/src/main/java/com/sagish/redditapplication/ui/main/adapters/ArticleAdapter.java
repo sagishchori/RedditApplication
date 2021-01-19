@@ -31,7 +31,8 @@ public class ArticleAdapter extends CardViewAdapter<ChildrenItem> {
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
 
-        ArticleCardViewItemBinding articleCardViewItemBinding = ArticleCardViewItemBinding.inflate(LayoutInflater.from(holder.itemView.getContext()));
+        ArticleCardViewItemBinding articleCardViewItemBinding = ArticleCardViewItemBinding
+                .inflate(LayoutInflater.from(holder.itemView.getContext()));
         holder.bindChildView(articleCardViewItemBinding);
 
         holder.bindData(list.get(position));
