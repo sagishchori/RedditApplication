@@ -80,18 +80,20 @@ public class ArticleFragment extends AbstractFragment {
 
     @Override
     protected void setupObservers() {
-        viewModel.getArticleItem().observe(getViewLifecycleOwner(), new Observer<List<ChildrenItem>>() {
-            @Override
-            public void onChanged(List<ChildrenItem> childrenItems) {
-                adapter.setData((ArrayList) childrenItems);
-            }
-        });
-
-        viewModel.getResult().observe(getViewLifecycleOwner(), new Observer<Result>() {
+        viewModel.getResult().observe(getViewLifecycleOwner(), new Observer<Result<List<ChildrenItem>>>() {
             @Override
             public void onChanged(Result result) {
-                if (result.getStatus() == Result.Status.ERROR) {
-                    showDialog(result.getMessage());
+                switch (result.getStatus()) {
+                    case ERROR:
+                        showDialog(result.getMessage());
+                        break;
+
+                    case SUCCESS:
+                        adapter.setData((ArrayList) result.getData());
+                        break;
+
+                    default:
+                        break;
                 }
             }
         });

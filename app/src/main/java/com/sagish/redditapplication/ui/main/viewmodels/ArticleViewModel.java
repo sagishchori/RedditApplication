@@ -16,20 +16,8 @@ import retrofit2.Response;
 
 public class ArticleViewModel extends AbstractViewModel {
 
-    protected MutableLiveData<Result> result = new MutableLiveData<>();
+    protected MutableLiveData<Result<List<ChildrenItem>>> result;
     private String articleLink;
-
-    private MutableLiveData<List<ChildrenItem>> childrenList;
-
-
-    public LiveData<List<ChildrenItem>> getArticleItem() {
-        if (childrenList == null) {
-            childrenList = new MutableLiveData<>();
-            loadArticle();
-        }
-
-        return childrenList;
-    }
 
     public void setArticleLink(String link) {
         if (link.startsWith("/")) {
@@ -38,7 +26,12 @@ public class ArticleViewModel extends AbstractViewModel {
         this.articleLink = link;
     }
 
-    public LiveData<Result> getResult() {
+    public LiveData<Result<List<ChildrenItem>>> getResult() {
+        if (result == null) {
+            result = new MutableLiveData<>();
+            loadArticle();
+        }
+
         return result;
     }
 
@@ -48,9 +41,8 @@ public class ArticleViewModel extends AbstractViewModel {
         MainRepository.getInstance().getPageJSONArray(articleLink, new Callback<List<MainResponse>>() {
             @Override
             public void onResponse(Call<List<MainResponse>> call, Response<List<MainResponse>> response) {
-                result.postValue(new Result.Success(null));
                 MainResponse mainResponse = response.body().get(0);
-                childrenList.postValue(mainResponse.getData().getChildren());
+                result.postValue(new Result.Success(mainResponse.getData().getChildren()));
             }
 
             @Override

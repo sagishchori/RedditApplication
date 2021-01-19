@@ -16,18 +16,13 @@ import retrofit2.Response;
 
 public class MainViewModel extends AbstractViewModel {
 
-    protected MutableLiveData<Result> result = new MutableLiveData<>();
-    private MutableLiveData<List<ChildrenItem>> childrenList;
+    protected MutableLiveData<Result<List<ChildrenItem>>> result;
 
-    public LiveData<List<ChildrenItem>> getChildrenItems() {
-        if (childrenList == null) {
-            childrenList = new MutableLiveData<>();
+    public LiveData<Result<List<ChildrenItem>>> getResult() {
+        if (result == null) {
+            result = new MutableLiveData<>();
             loadData();
         }
-        return childrenList;
-    }
-
-    public LiveData<Result> getResult() {
         return result;
     }
 
@@ -37,9 +32,8 @@ public class MainViewModel extends AbstractViewModel {
         MainRepository.getInstance().getPageJSONObject("", new Callback<MainResponse>() {
             @Override
             public void onResponse(Call<MainResponse> call, Response<MainResponse> response) {
-                result.postValue(new Result.Success(null));
                 MainResponse mainResponse = response.body();
-                childrenList.postValue(mainResponse.getData().getChildren());
+                result.postValue(new Result.Success(mainResponse.getData().getChildren()));
             }
 
             @Override
